@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.instagram.fragments.ComposeFragment;
 import com.example.instagram.fragments.PostsFragment;
+import com.example.instagram.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Compose", fragment.toString());
                         break;
                     case R.id.action_profile:
-                        fragment = new PostsFragment();
+                        fragment = new ProfileFragment();
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + item.getItemId());
