@@ -24,7 +24,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.instagram.MainActivity;
 import com.example.instagram.Post;
 import com.example.instagram.R;
 import com.parse.ParseException;
@@ -45,6 +44,7 @@ public class ComposeFragment extends Fragment {
     private Button mBtnSubmit;
     private File mPhotoFile;
     private String mPhotoFileName = "photo.jpg";
+    private Uri fileProvider;
 
     public ComposeFragment() {
         // Required empty public constructor
@@ -65,6 +65,9 @@ public class ComposeFragment extends Fragment {
         mBtnCaptureImage = view.findViewById(R.id.btnCaptureImage);
         mIvPostImage = view.findViewById(R.id.ivPostImage);
         mBtnSubmit = view.findViewById(R.id.btnSubmit);
+
+        mPhotoFile = getPhotoFileUri(mPhotoFileName);
+        fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", mPhotoFile);
 
         mBtnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,12 +102,11 @@ public class ComposeFragment extends Fragment {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
-        mPhotoFile = getPhotoFileUri(mPhotoFileName);
+
 
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", mPhotoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
@@ -153,7 +155,7 @@ public class ComposeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == getActivity().RESULT_OK) {
                 // by this point we have the camera photo on disk
                 Bitmap takenImage = BitmapFactory.decodeFile(mPhotoFile.getAbsolutePath());
                 // RESIZE BITMAP, see section below
