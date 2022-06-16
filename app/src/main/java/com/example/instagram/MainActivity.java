@@ -47,25 +47,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fragmentManager.beginTransaction().replace(R.id.flContainer, new PostsFragment()).commit();
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.action_compose);
+        bottomNavigationView.setSelectedItemId(R.id.action_feed);
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment = null;
+                Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.action_feed:
-                        Toast.makeText(MainActivity.this, "FEED!", Toast.LENGTH_SHORT).show();
                         fragment = new PostsFragment();
                         Log.d("Feed", fragment.toString());
                         break;
                     case R.id.action_compose:
-                        Toast.makeText(MainActivity.this, "COMPOSE!", Toast.LENGTH_SHORT).show();
                         fragment = new ComposeFragment();
                         Log.d("Compose", fragment.toString());
                         break;
                     case R.id.action_profile:
-                        Toast.makeText(MainActivity.this, "PROFILE!", Toast.LENGTH_SHORT).show();
                         fragment = new PostsFragment();
                         break;
                     default:
@@ -77,26 +76,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-//    public boolean onOptionsItemSelected(MenuItem item){
-//        int id = item.getItemId();
-//        switch (id) {
-//            case R.id.logout_btn:
-//                Log.d(TAG, "Logout button clicked!");
-//                // Sign a user out
-//                ParseUser.logOut();
-//                // The following line of code should be null
-//                ParseUser currentUser = ParseUser.getCurrentUser();
-//                Intent i = new Intent(this, LoginActivity.class);
-//                startActivity(i);
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.logout_btn:
+                Log.d(TAG, "Logout button clicked!");
+                // Sign a user out
+                ParseUser.logOut();
+                // The following line of code should be null
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                Intent i = new Intent(this, LoginActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
