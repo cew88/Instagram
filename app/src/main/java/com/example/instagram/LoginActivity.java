@@ -1,5 +1,6 @@
 package com.example.instagram;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -29,10 +30,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Hide the action bar on the login screen
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
         // If the user is already logged in
         // Skip the log in screen and navigate to the main activity
         if (ParseUser.getCurrentUser() != null){
-            goMainActivity();
+            goFeedActivity();
         }
 
         mEtUsername = findViewById(R.id.etUsername);
@@ -47,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser(username, password);
             }
         });
-
     }
 
     public void loginUser(String username, String password){
@@ -60,13 +64,13 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Incorrect login!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                goMainActivity();
+                goFeedActivity();
                 Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void goMainActivity() {
+    private void goFeedActivity() {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
