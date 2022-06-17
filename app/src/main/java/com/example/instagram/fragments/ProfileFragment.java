@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.instagram.GridAdapter;
 import com.example.instagram.Post;
@@ -20,6 +21,7 @@ import com.example.instagram.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class ProfileFragment extends Fragment {
     private RecyclerView rvPosts;
     private GridAdapter adapter;
     private List<Post> allPosts;
-    private SwipeRefreshLayout swipeContainer;
+    private TextView tvUsername;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -51,11 +53,12 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        super.onViewCreated(view, savedInstanceState);
-
+        tvUsername = view.findViewById(R.id.tvUsername_Prof);
         rvPosts = view.findViewById(R.id.rvPosts_Prof);
         allPosts = new ArrayList<>();
         adapter = new GridAdapter(getContext(), allPosts);
+
+        tvUsername.setText(ParseUser.getCurrentUser().getUsername());
 
         // Set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
@@ -85,13 +88,14 @@ public class ProfileFragment extends Fragment {
                     return;
                 }
 
-                // Post description for every post for debugging
-                for (Post post : posts) {
-                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
+                // Filter posts based on whether they were posted by the user.
+                for (Post post: posts){
+                    Log.d(TAG, post.getUser().toString());
+                    Log.d(TAG, ParseUser.getCurrentUser().toString());
+                    if (post.getUser().hasSameId(ParseUser.getCurrentUser())) {
+                        allPosts.add(post);
+                    }
                 }
-
-                // Save received posts to list and notify adapter of new data
-                allPosts.addAll(posts);
                 adapter.notifyDataSetChanged();
             }
         });
