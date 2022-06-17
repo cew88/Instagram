@@ -48,11 +48,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented user stories:
-
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [Kap](https://getkap.co/).
+Here's a walkthrough of implemented user stories: https://imgur.com/a/udo0YBl
 
 ## Credits
 
@@ -63,7 +59,7 @@ List an 3rd party libraries, icons, graphics, or other assets you used in your a
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Errors with liking posts causes the app to crash. Login in activity also has errors with invalid username and password.
 
 ## License
 
