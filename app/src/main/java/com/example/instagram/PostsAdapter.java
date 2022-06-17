@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -61,6 +64,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private ImageView ivComment;
         private ImageView ivSend;
         private ImageView ivSave;
+        private TextView tvLikeCount;
+        private TextView tvTimeStamp;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +77,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ivComment = itemView.findViewById(R.id.ivComment);
             ivSend = itemView.findViewById(R.id.ivSend);
             ivSave = itemView.findViewById(R.id.ivSave);
+            tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
+            tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
         }
 
         public void bind(Post post) {
@@ -93,13 +100,34 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 }
             });
 
+            tvTimeStamp.setText(post.calculateTimeAgo(post.getCreatedAt()));
+
+//            tvLikeCount.setText("Liked by " + post.getLikedBy().size());
+            ivHeart.setImageResource(R.drawable.ufi_heart);
+            Log.d("PostAdapter", String.valueOf(post.getLikedBy()));
+            if (post.getLikedBy().contains(ParseUser.getCurrentUser())){
+                ivHeart.setImageResource(R.drawable.ufi_heart_active);
+            }
+
             ivHeart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // If not already clicked
-                    ivHeart.setImageResource(R.drawable.ufi_heart_active);
                     // If already clicked
-                    ivHeart.setImageResource(R.drawable.ufi_heart);
+                    if (post.getLikedBy().contains(ParseUser.getCurrentUser())){
+                        try {
+                            post.removeLikedBy(ParseUser.getCurrentUser());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        ivHeart.setImageResource(R.drawable.ufi_heart);
+                        // Toast.makeText(context, "UNLIKED: " + String.valueOf(post.getLikedBy()), Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        // If not already clicked
+                        post.addLikedBy(ParseUser.getCurrentUser());
+                        ivHeart.setImageResource(R.drawable.ufi_heart_active);
+                        // Toast.makeText(context, "LIKED: " + String.valueOf(post.getLikedBy()), Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 

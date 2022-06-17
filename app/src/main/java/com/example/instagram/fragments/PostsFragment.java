@@ -106,9 +106,9 @@ public class PostsFragment extends Fragment {
                 }
 
                 // Post description for every post for debugging
-                for (Post post : posts) {
-                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
-                }
+//                for (Post post : posts) {
+//                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
+//                }
 
                 // Save received posts to list and notify adapter of new data
                 allPosts.addAll(posts);
